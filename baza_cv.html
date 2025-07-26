@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baza CV - eCVjob.pl</title>
+    
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: url('images/tlo.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header and Navigation */
+        header {
+            margin-bottom: 20px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 5px;
+        }
+
+        nav ul li a {
+            display: block;
+            padding: 15px 20px;
+            color: #00ff00;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background-color: rgba(0, 255, 0, 0.2);
+            border-radius: 5px;
+        }
+
+        /* Animacje pulsowania */
+        @keyframes pulse-number {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        @keyframes pulse-main-counter {
+            0%, 100% { transform: scale(1); color: #ff0000; }
+            50% { transform: scale(1.15); color: #ff3333; }
+        }
+
+        /* Main content */
+        main {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            flex: 1;
+        }
+
+        /* Sekcja planów płatnych */
+        .plans-section {
+            margin: 40px 0;
+            padding: 40px 20px;
+            background: transparent;
+            border-radius: 12px;
+            border: none;
+        }
+        
+        .plans-comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .plan-card {
+            background: rgba(0, 255, 0, 0.1) !important;
+            border: 2px solid #00ff00 !important;
+            border-radius: 15px !important;
+            padding: 30px !important;
+            text-align: center !important;
+            transition: all 0.3s ease !important;
+            position: relative !important;
+            overflow: hidden !important;
+        }
+
+        /* Przezroczyste, jasne tła dla różnych planów */
+        .plan-card.basic {
+            background: rgba(0,255,0,0.10) !important;
+            border-color: #00ff00 !important;
+            border-width: 2px !important;
+            box-shadow: none !important;
+        }
+        .plan-card.blue {
+            background: rgba(0, 120, 255, 0.10) !important;
+            border-color: #00cfff !important;
+            border-width: 6px !important;
+            border-style: double !important;
+            box-shadow: 0 0 0 3px #00cfff44 !important;
+            font-weight: bold !important;
+        }
+        .plan-card.gold {
+            background: rgba(180, 0, 255, 0.13) !important;
+            border-color: #c800ff !important;
+            border-width: 6px !important;
+            border-style: double !important;
+            box-shadow: 0 0 32px 8px #c800ff, 0 0 64px 24px #a100ff, 0 0 0 3px #e580ff99 !important;
+            font-weight: bold !important;
+        }
+        .plan-card.gold.basic {
+            background: rgba(255, 215, 0, 0.10) !important;
+            border-color: #FFD700 !important;
+            border-width: 6px !important;
+            border-style: double !important;
+            box-shadow: 0 0 32px 8px #FFD700, 0 0 64px 24px #FFD700, 0 0 0 3px #FFD70055 !important;
+            font-weight: bold !important;
+/* Dodatkowe wymuszenie koloru dla planu premium (fioletowy) */
+.plan-card.gold, .plan-card.gold * {
+    color: #e580ff !important;
+    text-shadow: 0 0 12px #e580ff, 0 0 2px #c800ff;
+}
+.plan-card.gold .plan-title,
+.plan-card.gold .plan-price,
+.plan-card.gold .plan-features li,
+.plan-card.gold .plan-button {
+    color: #e580ff !important;
+    text-shadow: 0 0 12px #e580ff, 0 0 2px #c800ff;
+}
+.plan-card.gold .plan-price, .plan-card.gold .plan-price .currency {
+    color: #e580ff !important;
+}
+        }
+        .plan-card.sea {
+            background: rgba(0,255,200,0.13) !important;
+            border-color: #00fff7 !important;
+            border-width: 6px !important;
+            border-style: double !important;
+            box-shadow: 0 0 32px 8px #00fff7, 0 0 64px 24px #00bfae, 0 0 0 3px #00fff755 !important;
+            font-weight: bold !important;
+            transition: box-shadow 0.3s, border-color 0.3s;
+        }
+
+
+        /* Silna łuna (glow) na hover na .plan-card, w kolorze obramowania */
+        .plan-card.basic:hover {
+            box-shadow: 0 0 128px 32px #00ff00, 0 0 256px 64px #00ff00, 0 0 384px 96px #00ff00, 0 0 16px 4px #fff;
+            z-index: 2;
+        }
+        .plan-card.blue:hover,
+        .plan-card.gold.advanced:hover,
+        .plan-card.gold.advanced:focus {
+            box-shadow: 0 0 128px 32px #e580ff, 0 0 256px 64px #c800ff, 0 0 384px 96px #e580ff, 0 0 16px 4px #fff;
+            z-index: 2;
+        }
+        .plan-card.gold.basic:hover {
+            box-shadow: 0 0 128px 32px #FFD700, 0 0 256px 64px #FFD700, 0 0 384px 96px #FFD700, 0 0 16px 4px #fff !important;
+            z-index: 2;
+        }
+        .plan-card.sea.advanced:hover {
+            box-shadow: 0 0 128px 32px #00fff7, 0 0 256px 64px #00bfae, 0 0 384px 96px #00fff7, 0 0 16px 4px #fff !important;
+            z-index: 2;
+            transition: box-shadow 0.3s, border-color 0.3s;
+        }
+        .plan-card.gold.advanced:hover {
+            box-shadow: 0 0 128px 32px #e580ff, 0 0 256px 64px #c800ff, 0 0 384px 96px #e580ff, 0 0 16px 4px #fff !important;
+            z-index: 2;
+            transition: box-shadow 0.3s, border-color 0.3s;
+        }
+        .plan-card.gold.basic:hover {
+            box-shadow: 0 0 128px 32px #FFD700, 0 0 256px 64px #FFD700, 0 0 384px 96px #FFD700, 0 0 16px 4px #fff !important;
+            z-index: 2;
+        }
+        .plan-card.sea:hover,
+        .plan-card.sea.advanced:hover {
+            box-shadow: 0 0 128px 32px #00fff7, 0 0 256px 64px #00bfae, 0 0 384px 96px #00fff7, 0 0 16px 4px #fff;
+            z-index: 2;
+        }
+        .plan-card.sea:hover,
+        .plan-card.sea.advanced:hover {
+            border-color: #00fff7 !important;
+        }
+
+        /* Nakładka na hover */
+        .plan-card::after {
+            /* Usunięto nakładkę, aby glow był w pełni widoczny */
+        }
+
+        .plan-card.advanced.sea {
+            background: rgba(0,255,200,0.13) !important;
+            border: 6px double #00fff7 !important;
+            box-shadow: 0 0 32px 8px #00fff7, 0 0 64px 24px #00bfae, 0 0 0 3px #00fff755 !important;
+            font-weight: bold !important;
+            transition: box-shadow 0.3s, border-color 0.3s;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-8px) !important;
+        }
+
+        .plan-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #00ff00;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+
+        /* Pogrubienie i kolor tekstu w planach - wszystkie oprócz planu za 0 zł */
+        .plan-card:not(.basic), .plan-card:not(.basic) * {
+            font-weight: bold !important;
+            color: #00fff7 !important;
+            text-shadow: 0 0 8px #00fff7, 0 0 2px #00bfae;
+        }
+        /* Plan za 0 zł (basic) - normalna waga i kolor zielony */
+        .plan-card.basic, .plan-card.basic * {
+            font-weight: normal !important;
+            color: #00ff88 !important;
+            text-shadow: 0 2px 8px #003300, 0 0 2px #00ff00;
+        }
+
+        .plan-card.advanced .plan-title {
+            color: #FFD700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .plan-price {
+            font-size: 2.7rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Kolor tekstu w planach zgodny z kolorem kontenera */
+        .plan-card.basic .plan-title,
+        .plan-card.basic .plan-price,
+        .plan-card.basic .plan-features li,
+        .plan-card.basic .plan-button {
+            color: #00ff88 !important;
+            text-shadow: 0 2px 8px #003300, 0 0 2px #00ff00;
+        }
+        .plan-card.blue .plan-title,
+        .plan-card.blue .plan-price,
+        .plan-card.blue .plan-features li,
+        .plan-card.blue .plan-button {
+            color: #00cfff !important;
+            text-shadow: 0 2px 8px #001a33, 0 0 2px #00cfff;
+        }
+        .plan-card.gold .plan-title,
+        .plan-card.gold .plan-price,
+        .plan-card.gold .plan-features li,
+        .plan-card.gold .plan-button {
+            color: #ffe066 !important;
+            font-weight: bold !important;
+            text-shadow: 0 2px 8px #332900, 0 0 2px #FFD700;
+        }
+        .plan-card.sea .plan-title,
+        .plan-card.sea .plan-price,
+        .plan-card.sea .plan-features li,
+        .plan-card.sea .plan-button {
+            color: #00ffd0 !important;
+            font-weight: bold !important;
+            text-shadow: 0 2px 8px #003333, 0 0 2px #00ffd0;
+        }
+
+        /* Pogrubienie i kolor dla wszystkich cen w planach */
+        .plan-price, .plan-card .plan-price, .plan-card .plan-price .currency {
+            font-weight: bold !important;
+        }
+        .plan-card.basic .plan-price, .plan-card.basic .plan-price .currency {
+            color: #00ff00 !important;
+        }
+        .plan-card.blue .plan-price, .plan-card.blue .plan-price .currency {
+            color: #0078ff !important;
+        }
+        .plan-card.gold .plan-price, .plan-card.gold .plan-price .currency {
+            color: #FFD700 !important;
+        }
+        .plan-card.sea .plan-price, .plan-card.sea .plan-price .currency {
+            color: #00ffd0 !important;
+        }
+        .plan-card.advanced .plan-price, .plan-card.advanced .plan-price .currency {
+            color: #FFD700 !important;
+        }
+
+        .plan-price .currency {
+            font-size: 1.2rem;
+            color: #00ff00;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            font-weight: bold;
+        }
+
+        .plan-card.advanced .plan-price .currency {
+            color: #FFD700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .plan-features {
+            list-style: none;
+            padding: 0;
+            margin: 25px 0;
+            text-align: left;
+        }
+
+        .plan-features li {
+            padding: 8px 0;
+            color: #fff;
+            font-size: 1rem;
+            position: relative;
+            padding-left: 25px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+            font-weight: 500;
+        }
+
+        .plan-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #00ff00;
+            font-weight: bold;
+        }
+
+        .plan-card.advanced .plan-features li::before {
+            color: #FFD700;
+        }
+
+        .plan-card.advanced .plan-features li {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .plan-card.advanced .plan-features li strong {
+            color: #FFD700;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        .plan-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            color: #000;
+            text-decoration: none;
+            text-align: center;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 20px;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            font-weight: 700;
+            border: none;
+        }
+
+        /* Zielony przycisk */
+        .plan-card.basic .plan-button {
+            background: linear-gradient(45deg, #00ff00, #33ff33) !important;
+            color: #000 !important;
+        }
+        .plan-card.basic .plan-button:hover {
+            background: linear-gradient(45deg, #33ff33, #00ff00) !important;
+        }
+
+        /* Niebieski przycisk */
+        .plan-card.blue .plan-button {
+            background: linear-gradient(45deg, #0078ff, #00cfff) !important;
+            color: #fff !important;
+        }
+        .plan-card.blue .plan-button:hover {
+            background: linear-gradient(45deg, #00cfff, #0078ff) !important;
+        }
+
+        /* Złoty przycisk */
+        .plan-card.gold .plan-button {
+            background: linear-gradient(45deg, #FFD700, #FFA500) !important;
+            color: #000 !important;
+        }
+        .plan-card.gold .plan-button:hover {
+            background: linear-gradient(45deg, #FFA500, #FFD700) !important;
+        }
+
+        /* Morski przycisk */
+        .plan-card.sea .plan-button {
+            background: linear-gradient(45deg, #00ffd0, #00bfae) !important;
+            color: #003333 !important;
+        }
+        .plan-card.sea .plan-button:hover {
+            background: linear-gradient(45deg, #00bfae, #00ffd0) !important;
+        }
+
+        /* Stylowanie dla planu Basic - wszystkie napisy zielone */
+        .plan-card.basic .plan-features li {
+            color: #00ff00 !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7) !important;
+        }
+        
+        .plan-card.basic .plan-features li::before {
+            color: #00ff00 !important;
+        }
+        
+        .plan-card.basic .plan-features li strong {
+            color: #33ff33 !important;
+            font-weight: 900 !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7) !important;
+        }
+        
+        .plan-card.basic .plan-button {
+            background: linear-gradient(45deg, #00ff00, #33ff33) !important;
+            color: #000 !important;
+        }
+        
+        .plan-card.basic .plan-button:hover {
+            background: linear-gradient(45deg, #33ff33, #66ff66) !important;
+            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.4) !important;
+        }
+
+        /* Stylowanie dla planu Advanced - wszystkie napisy złote */
+        .plan-card.advanced .plan-features li {
+            color: #FFD700 !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7) !important;
+        }
+        
+        .plan-card.advanced .plan-features li::before {
+            color: #FFD700 !important;
+        }
+        
+        .plan-card.advanced .plan-features li strong {
+            color: #FFA500 !important;
+            font-weight: 900 !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7) !important;
+        }
+        
+        .plan-card.advanced .plan-button {
+            background: linear-gradient(45deg, #FFD700, #FFA500) !important;
+            color: #000 !important;
+        }
+        
+        .plan-card.advanced .plan-button:hover {
+            background: linear-gradient(45deg, #FFA500, #FFD700) !important;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4) !important;
+        }
+
+        /* Stopka */
+        footer {
+            background: rgba(0, 0, 0, 0.7);
+            color: #00ff00;
+            padding: 20px;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 8px;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 1rem;
+            color: #00ff00;
+        }
+
+        /* Locked content */
+        .locked-message {
+            background: rgba(255, 107, 107, 0.1);
+            border: 2px solid #ff6b6b;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+            transition: background 0.25s, box-shadow 0.25s, transform 0.25s;
+        }
+
+        button.locked-message {
+            /* Ensure button uses same style as div */
+            display: block;
+            width: 100%;
+            border: none;
+            outline: none;
+            background: rgba(255, 107, 107, 0.1);
+        }
+
+        button.locked-message:hover, .locked-message:hover {
+            background: linear-gradient(0deg, rgba(0,0,0,0.85) 80%, rgba(180,30,30,0.45) 100%) !important;
+            box-shadow: 0 0 32px 8px #ff6b6b99, 0 0 8px 2px #fff2;
+            transform: scale(1.07);
+            cursor: pointer;
+        }
+
+        .locked-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+            background: linear-gradient(45deg, #ff0000 60%, #b30000 100%);
+            color: #fff;
+            border-radius: 50%;
+            padding: 18px 24px 18px 24px;
+            box-shadow: 0 0 18px 6px #ff000099, 0 0 32px 12px #b3000055;
+            transition: background 0.3s, box-shadow 0.3s, filter 0.3s;
+            cursor: pointer;
+        }
+        .locked-icon:hover {
+            background: linear-gradient(45deg, #b30000 60%, #660000 100%);
+            filter: brightness(0.85) contrast(1.5);
+            box-shadow: 0 0 32px 12px #ff0000, 0 0 64px 24px #b30000;
+        }
+        }
+
+        /* Media queries */
+        @media (max-width: 768px) {
+            .plans-comparison {
+                grid-template-columns: 1fr;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul li a {
+                padding: 12px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <!-- menu usunięte -->
+        </header>
+
+        <main>
+            <!-- Sekcja nagłówkowa -->
+            <section style="text-align: center; padding: 2rem 0;">
+                <h1 style="font-size: 3rem; color: #00ff00; margin-bottom: 1rem; font-weight: bold; text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.9);">
+                    🔍 Baza CV dla Pracodawców
+                </h1>
+                <p style="font-size: 1.8rem; color: #00fff7; margin-bottom: 2rem; max-width: 800px; margin-left: auto; margin-right: auto; font-weight: bold; letter-spacing: 0.5px;">
+                    W naszej bazie jest już <span id="main-counter-number" style="font-size: 3.7rem; font-weight: 900; color: #00fff7; text-shadow: 0 0 18px #00fff7, 0 0 32px #00bfae, 0 0 8px #fff; animation: pulse-main-counter 2s ease-in-out infinite; display: inline-block; margin: 0 0.5rem;">247</span> kandydatów!<br>
+                    Zaawansowane wyszukiwanie według lokalizacji, zawodu, doświadczenia i wielu innych kryteriów.
+                </p>
+            </section>
+
+            <!-- Wiadomość o konieczności płatności jako button -->
+            <button id="locked-content" class="locked-message" type="button" onclick="accessCVDatabase()" style="cursor: pointer; width: 100%; border: none; background: rgba(255, 107, 107, 0.1); box-shadow: 0 0 32px 8px #ff000055; transition: box-shadow 0.3s; margin-bottom: 2rem; outline: none;">
+                <span class="locked-icon" style="pointer-events: none;">🔒</span>
+                <h2 style="color: #ff6b6b; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); font-weight: bold; pointer-events: none;">Dostęp tylko dla pracodawców z planem Business</h2>
+            </button>
+
+            <!-- Plany płatności -->
+            <section id="payment-plans" class="plans-section">
+                
+
+                <!-- Wiersz 1: 3 plany dla poszukujących pracy -->
+                <div class="plans-comparison" style="grid-template-columns: repeat(3, 1fr); max-width: 900px; margin-left: auto; margin-right: auto; gap: 18px; overflow: visible; position: relative;">
+                    <!-- Plan Bezpłatny -->
+                    <div class="plan-card basic">
+                        <h3 class="plan-title" style="color: #00ff00;">Bezpłatny</h3>
+                        <div class="plan-price" style="color: #00ff00;">0 <span class="currency" style="color: #33ff33;">zł</span></div>
+                        <ul class="plan-features">
+                            <li>Możliwość aplikowania na ogłoszenia o pracę</li>
+                            <li>Tworzenie i edycja 1 CV</li>
+                            <li>5 podstawowych szablonów</li>
+                            <li>Eksport PDF</li>
+                            <li>Podstawowe wskazówki</li>
+                            <li>Dodanie 1 ogłoszenia o pracę</li>
+                            <li>Dodanie 1 ogłoszenia usługi</li>
+                        </ul>
+                        <a href="#" class="plan-button" onclick="selectPlan('bezplatny', 0)">Wybierz Bezpłatny</a>
+                    </div>
+                    <!-- Plan Starter -->
+                    <div class="plan-card blue">
+                        <h3 class="plan-title">Starter</h3>
+                        <div class="plan-price">14,99 <span class="currency">zł/miesiąc</span></div>
+                        <ul class="plan-features">
+                            <li>Dodanie CV do bazy aktualnych CV</li>
+                            <li>5 podstawowych szablonów</li>
+                            <li>Eksport PDF</li>
+                            <li>Podstawowe wskazówki</li>
+                            <li>Bez reklam</li>
+                            <li>Możliwość aplikowania na ogłoszenia o pracę</li>
+                            <li>Dodanie 3 ogłoszeń o pracę/miesiąc</li>
+                            <li>Dodanie 3 ogłoszeń usług/miesiąc</li>
+                        </ul>
+                        <a href="#" class="plan-button" onclick="selectPlan('starter', 14.99)">Wybierz Starter</a>
+                    </div>
+                    <!-- Plan Premium -->
+                    <div class="plan-card gold advanced" style="position:relative;">
+                        <!-- Opaska Najczęściej wybierany z pucharem (wyśrodkowana, poniżej górnej krawędzi) -->
+                        <div style="position: absolute; top: 18px; left: 50%; transform: translateX(-50%); width: 85%; z-index: 101; pointer-events: none;">
+                            <div style="display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; background: linear-gradient(90deg, #ffd700 60%, #ffed4e 100%); color: #000 !important; font-weight: bold; font-size: 1.18rem; text-align: center; padding: 10px 0 8px 0; box-shadow: 0 6px 24px 8px #FFD700cc; border-radius: 12px; border: 3px solid #fffbe6; letter-spacing: 1.5px; text-shadow: 0 1px 10px #fffbe6;">
+                                <span style="font-size: 1.5em; margin-right: 6px;">🏆</span>
+                                Najczęściej wybierany
+                            </div>
+                        </div>
+                        <h3 class="plan-title" style="color:#000;">Premium</h3>
+                        <div class="plan-price" style="margin-top:18px;">29,99 <span class="currency">zł/miesiąc</span></div>
+                        <ul class="plan-features">
+                            <li>Dodanie CV do bazy aktualnych CV</li>
+                            <li>Nieograniczona liczba CV</li>
+                            <li>50+ szablonów premium CV</li>
+                            <li>Wszystkie formaty eksportu</li>
+                            <li>WebResume + własna domena</li>
+                            <li>Bez reklam</li>
+                            <li>AI asystent pisania</li>
+                            <li>Analityka CV</li>
+                            <li><strong>5 ogłoszeń o pracę/miesiąc</strong></li>
+                            <li><strong>5 ogłoszeń usług/miesiąc</strong></li>
+                            <li>Email support</li>
+                        </ul>
+                        <a href="#" class="plan-button" onclick="selectPlan('premium', 29.99)">Wybierz Premium</a>
+                    </div>
+                </div>
+
+                <!-- Nagłówek dla planów pracodawców -->
+                <h3 style="text-align:center; color:#FFD700; font-size:2.1rem; margin: 60px 0 18px 0; text-shadow:0 2px 12px #000,0 0 8px #FFD700; font-weight:bold; letter-spacing:1px;">Plany dla pracodawców</h3>
+                <div class="plans-comparison" style="grid-template-columns: repeat(2, minmax(320px, 1fr)); max-width: 900px; margin-left: auto; margin-right: auto; gap: 28px;">
+                    <!-- Plan Business Podstawowy -->
+                    <div class="plan-card gold basic">
+                        <h3 class="plan-title">Business Podstawowy</h3>
+                        <div class="plan-price">99 <span class="currency">zł/miesiąc</span></div>
+                        <ul class="plan-features">
+                            <li>Dostęp do 100 CV miesięcznie</li>
+                            <li>Podstawowe wyszukiwanie i filtry</li>
+                            <li>Kontakt z kandydatami</li>
+                            <li>Eksport wyników do CSV</li>
+                            <li>Support email</li>
+                            <li><strong>5 ogłoszeń o pracę/miesiąc</strong></li>
+                            <li><strong>3 ogłoszenia usług/miesiąc</strong></li>
+                            <li>Podstawowe analityki</li>
+                            <li>Panel pracodawcy</li>
+                            <li>Zarządzanie aplikacjami</li>
+                        </ul>
+                        <a href="#" class="plan-button" onclick="selectPlan('business-basic', 99)">Wykup Plan Podstawowy</a>
+                    </div>
+
+                    <!-- Plan Business Zaawansowany -->
+                    <div class="plan-card sea advanced">
+                        <h3 class="plan-title">Business Zaawansowany</h3>
+                        <div class="plan-price">199 <span class="currency">zł/miesiąc</span></div>
+                        <ul class="plan-features">
+                            <li>Wszystko z Podstawowego</li>
+                            <li><strong>Nieograniczony dostęp do bazy CV</strong></li>
+                            <li>Wszystkie zaawansowane filtry</li>
+                            <li>Kontakt z kandydatami</li>
+                            <li>Eksport wyników do CSV/Excel</li>
+                            <li><strong>Powiadomienia email i SMS</strong></li>
+                            <li>Priorytetowy kontakt z kandydatami</li>
+                            <li>Szczegółowe analityki i raporty</li>
+                            <li><strong>Support 24/7</strong></li>
+                            <li><strong>Nieograniczone ogłoszenia o pracę</strong></li>
+                            <li><strong>Nieograniczone ogłoszenia usług</strong></li>
+                            <li>Panel administratora</li>
+                            <li>Zarządzanie zespołem</li>
+                            <li>Brandowane szablony</li>
+                            <li>API dostęp</li>
+                            <li>Dedicated support</li>
+                            <li>SSO integracja</li>
+                            <li>Zaawansowane raportowanie</li>
+                        </ul>
+                        <a href="#" class="plan-button" onclick="selectPlan('business-advanced', 199)">Wykup Plan Zaawansowany</a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Stopka usunięta na życzenie użytkownika -->
+    </div>
+
+    <script>
+        function selectPlan(planType, price) {
+            alert(`Wybrano plan: ${planType} za ${price} zł/miesiąc`);
+        }
+
+        function accessCVDatabase() {
+            // Tu można dodać przekierowanie lub logikę po wykupieniu planu
+            alert('Dostęp do bazy CV tylko po wykupieniu planu Business!');
+        }
+
+        // Inicjalizacja strony
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Strona załadowana - wszystkie style powinny działać');
+        });
+    </script>
+</body>
+</html>
